@@ -6,3 +6,17 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+      - id: detect-private-key
+
+  # Block secrets: .env files and OpenAI-style API keys
+  - repo: local
+    hooks:
+      - id: block-env-files
+        name: Block .env files
+        entry: ".env files must not be committed (use .env.example)"
+        language: fail
+        files: '(^|/)\.env(\.(?!example$)[^/]+)?$'
+      - id: block-api-keys
+        name: Block API keys
+        entry: 'sk-(proj-)?[A-Za-z0-9_-]{20,}'
+        language: pygrep

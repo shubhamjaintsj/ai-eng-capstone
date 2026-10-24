@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get(\"tool_input\", {}).get(\"file_path\", \"\"))'); case \"$f\" in *.py) cd \"$CLAUDE_PROJECT_DIR\" && poetry run ruff check \"$f\" >&2 || exit 2 ;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}
